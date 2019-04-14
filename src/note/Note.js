@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { style } from 'glamor';
 
 const Note = ({ note }) => {
@@ -17,13 +17,6 @@ const Note = ({ note }) => {
       transform: 'scale(1.2)',
     },
   });
-
-  useEffect(() => {});
-  // setInterval(() => {
-  //   if (note.title) {
-  //     console.log(note.editable);
-  //   }
-  // }, 1000);
 
   return (
     <div id={note.id} className="card" {...styleP}>
