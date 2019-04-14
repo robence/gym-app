@@ -1,36 +1,63 @@
-import React from 'react';
-import { style } from 'glamor';
+import React, { useState } from 'react';
 
 import Note from './Note';
-import notes from './data';
+import data from './data';
 
 const NoteContainer = () => {
-  const styleP = style({
-    backgroundColor: 'white',
-    width: '100 px',
-    maxWidth: '25%',
-    height: '200 px',
-    margin: '20px',
-    padding: '10px',
-    boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
-    transition: '0.3s',
-    ':hover': {
-      boxShadow: '0 16px 32px 0 rgba(0,0,0,0.2)',
-      transform: 'scale(1.2)',
-    },
+  const initialNotes = data.map((note, i) => {
+    return { ...note, id: i, editable: false };
   });
 
-  const getNote = () => {
-    return notes[Math.floor(Math.random() * notes.length)];
+  const [notes, setNotes] = useState(initialNotes);
+
+  const getCardId = (e) => {
+    if (e.target.classList.contains('container')) {
+      return -1;
+    }
+    if (e.target.classList.contains('card')) {
+      return Number(e.target.id);
+    }
+    if (e.target.parentElement.classList.contains('card')) {
+      return Number(e.target.parentElement.id);
+    }
+    return '';
   };
 
-  return notes.map(() => {
-    return (
-      <div {...styleP}>
-        <Note note={getNote()} />
-      </div>
-    );
-  });
+  const handleClick = (e) => {
+    const editableCardId = getCardId(e);
+    console.log(editableCardId);
+
+    const temp = notes.map((note) => {
+      if (note.id === editableCardId) {
+        console.log('runs');
+      }
+      return { ...note, editable: Number(note.id) === editableCardId };
+    });
+
+    setNotes(temp);
+
+    console.log('editable cards size:');
+    const x = notes.filter((note) => {
+      return note.editable;
+    });
+    console.log(x[0]);
+  };
+
+  const style = {
+    width: '100 vw',
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    padding: '10px',
+  };
+
+  const getContent = () => notes.map((note, i) => <Note key={i} note={note} />);
+
+  return (
+    <div className="container" style={style} onClick={handleClick}>
+      {getContent()}
+    </div>
+  );
 };
 
 export default NoteContainer;
