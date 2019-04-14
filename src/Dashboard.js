@@ -7,6 +7,7 @@ const Dashboard = () => {
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
+    padding: '10px',
   };
 
   return (
